@@ -99,13 +99,20 @@ func (estimator *BinpackingNodeEstimator) Estimate(
 				klog.Errorf("Error while adding new node for template to ClusterSnapshot; %v", err)
 				return 0
 			}
-			newNodeNameIndex++
-			// And schedule pod to it
-			if err := estimator.clusterSnapshot.AddPod(podInfo.pod, newNodeName); err != nil {
-				klog.Errorf("Error adding pod %v.%v to node %v in ClusterSnapshot; %v", podInfo.pod.Namespace, podInfo.pod.Name, newNodeName, err)
-				return 0
+			if estimator.predicateChecker.CheckPredicates(estimator.clusterSnapshot,podInfo.pod, newNodeName) == nil {
+			    newNodeNameIndex++
+			    // And schedule pod to it
+                if err := estimator.clusterSnapshot.AddPod(podInfo.pod, newNodeName); err != nil {
+                	klog.Errorf("Error adding pod %v.%v to node %v in ClusterSnapshot; %v", podInfo.pod.Namespace, podInfo.pod.Name, newNodeName, err)
+                	return 0
+                }
+                newNodeNames[newNodeName] = true
+			} else {
+			    if err := estimator.clusterSnapshot.RemoveNode(newNodeName); err != nil {
+                    klog.Errorf("Error while removing new node from ClusterSnapshot; %v", err)
+                    return 0
+                }
 			}
-			newNodeNames[newNodeName] = true
 		}
 	}
 	return len(newNodeNames)
