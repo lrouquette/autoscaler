@@ -17,6 +17,11 @@ A stands for Adobe's changes
 
 # Log
 
+## cluster-autoscaler-1.20.0-1.1.0-adobe
+
+- fix uneven scaling with topology contraints
+- backport https://github.com/kubernetes/autoscaler/pull/3883
+
 ## cluster-autoscaler-1.20.0-1.0.0-adobe
 
 - on scale-down, evict DaemonSet pods after all the other pods
