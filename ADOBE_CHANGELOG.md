@@ -17,6 +17,10 @@ A stands for Adobe's changes
 
 # Log
 
+## cluster-autoscaler-1.20.1-1.2.0-adobe
+
+- improve scale out time when using topology spread constraints
+
 ## cluster-autoscaler-1.20.1-1.1.0-adobe
 
 - upgraded ca
