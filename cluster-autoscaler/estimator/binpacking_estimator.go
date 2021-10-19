@@ -78,6 +78,14 @@ func (estimator *BinpackingNodeEstimator) Estimate(
 
 	for _, podInfo := range podInfos {
 		found := false
+		if len(podInfo.pod.Spec.TopologySpreadConstraints) > 0 {
+		    for i,_ := range podInfo.pod.Spec.TopologySpreadConstraints {
+		        if podInfo.pod.Spec.TopologySpreadConstraints[i].TopologyKey == "failure-domain.beta.kubernetes.io/zone" {
+		            podInfo.pod.Spec.TopologySpreadConstraints[i].MaxSkew = 5
+		            break;
+		        }
+		    }
+		}
 
 		nodeName, err := estimator.predicateChecker.FitsAnyNodeMatching(estimator.clusterSnapshot, podInfo.pod, func(nodeInfo *schedulerframework.NodeInfo) bool {
 			return newNodeNames[nodeInfo.Node().Name]
@@ -110,6 +118,7 @@ func (estimator *BinpackingNodeEstimator) Estimate(
 					klog.Errorf("Error while removing new node from ClusterSnapshot; %v", err)
 					return 0
 				}
+				return len(newNodeNames)
 			}
 		}
 	}
