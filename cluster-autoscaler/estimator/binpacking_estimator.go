@@ -91,6 +91,15 @@ func (e *BinpackingNodeEstimator) Estimate(
 
 	for _, podInfo := range podInfos {
 		found := false
+		if len(podInfo.pod.Spec.TopologySpreadConstraints) > 0 {
+			for i := range podInfo.pod.Spec.TopologySpreadConstraints {
+				if podInfo.pod.Spec.TopologySpreadConstraints[i].TopologyKey == "failure-domain.beta.kubernetes.io/zone" ||
+					podInfo.pod.Spec.TopologySpreadConstraints[i].TopologyKey == "topology.kubernetes.io/zone" {
+					podInfo.pod.Spec.TopologySpreadConstraints[i].MaxSkew = 5
+					break
+				}
+			}
+		}
 
 		nodeName, err := e.predicateChecker.FitsAnyNodeMatching(e.clusterSnapshot, podInfo.pod, func(nodeInfo *schedulerframework.NodeInfo) bool {
 			return newNodeNames[nodeInfo.Node().Name]
