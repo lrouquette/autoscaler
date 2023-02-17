@@ -17,6 +17,9 @@ A stands for Adobe's changes
 
 # Log
 
+## cluster-autoscaler-1.23.1-1.5.0-adobe
+- skip deletion of unregistered nodes if there are more than 50% of discovered nodes
+
 ## cluster-autoscaler-1.23.1-1.4.0-adobe
 - built from CA v1.23.1
 - backport https://github.com/kubernetes/autoscaler/pull/4970
