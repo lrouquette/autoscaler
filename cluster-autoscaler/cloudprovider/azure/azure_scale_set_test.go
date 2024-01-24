@@ -184,7 +184,6 @@ func TestTargetSize(t *testing.T) {
 		provider.azureManager.azClient.virtualMachinesClient = mockVMClient
 
 		if orchMode == compute.Uniform {
-
 			mockVMSSVMClient := mockvmssvmclient.NewMockInterface(ctrl)
 			mockVMSSVMClient.EXPECT().List(gomock.Any(), provider.azureManager.config.ResourceGroup, "test-asg", gomock.Any()).Return(expectedVMSSVMs, nil).AnyTimes()
 			provider.azureManager.azClient.virtualMachineScaleSetVMsClient = mockVMSSVMClient

@@ -697,12 +697,23 @@ func TestGetFilteredAutoscalingGroupsVmss(t *testing.T) {
 		azureRef: azureRef{
 			Name: vmssName,
 		},
+<<<<<<< HEAD
 		minSize:                minVal,
 		maxSize:                maxVal,
 		manager:                manager,
 		curSize:                3,
 		sizeRefreshPeriod:      manager.azureCache.refreshInterval,
 		instancesRefreshPeriod: defaultVmssInstancesRefreshPeriod,
+=======
+		minSize:                  minVal,
+		maxSize:                  maxVal,
+		manager:                  manager,
+		enableForceDelete:        manager.config.EnableForceDelete,
+		curSize:                  3,
+		sizeRefreshPeriod:        manager.azureCache.refreshInterval,
+		instancesRefreshPeriod:   defaultVmssInstancesRefreshPeriod,
+		getVmssSizeRefreshPeriod: time.Duration(VmssSizeRefreshPeriodDefault) * time.Second,
+>>>>>>> a97ffab02 (logic for getvmss call for spot, uniform vmss)
 	}}
 	assert.True(t, assert.ObjectsAreEqualValues(expectedAsgs, asgs), "expected %#v, but found: %#v", expectedAsgs, asgs)
 }
