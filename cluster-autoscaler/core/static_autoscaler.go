@@ -403,7 +403,14 @@ func (a *StaticAutoscaler) RunOnce(currentTime time.Time) caerrors.AutoscalerErr
 	// Check if there are any nodes that failed to register in Kubernetes
 	// master.
 	unregisteredNodes := a.clusterStateRegistry.GetUnregisteredNodes()
-	if len(unregisteredNodes) > 0 {
+	if float64(len(unregisteredNodes)) > float64(len(allNodes))*50.0/100.0 {
+		klog.Warningf("%d unregistered nodes present - skipping deletion (only %d nodes discovered)", len(unregisteredNodes), len(allNodes))
+		// clear the state so that the UnregisteredSince timestamp is reset
+		a.clusterStateRegistry.ClearUnregisteredNodes()
+		for _, n := range unregisteredNodes {
+			klog.V(0).Infof("--> %v", n.Node.GetObjectMeta().GetName())
+		}
+	} else if len(unregisteredNodes) > 0 {
 		klog.V(1).Infof("%d unregistered nodes present", len(unregisteredNodes))
 		removedAny, err := removeOldUnregisteredNodes(unregisteredNodes, autoscalingContext,
 			a.clusterStateRegistry, currentTime, autoscalingContext.LogRecorder)
@@ -414,6 +421,8 @@ func (a *StaticAutoscaler) RunOnce(currentTime time.Time) caerrors.AutoscalerErr
 		if removedAny {
 			klog.V(0).Infof("Some unregistered nodes were removed")
 		}
+	} else {
+		klog.V(0).Infof("noop")
 	}
 
 	if !a.clusterStateRegistry.IsClusterHealthy() {
