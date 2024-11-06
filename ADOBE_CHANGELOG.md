@@ -17,6 +17,12 @@ A stands for Adobe's changes
 
 # Log
 
+## cluster-autoscaler-1.29.4-1.7.0-adobe
+- backport https://github.com/kubernetes/autoscaler/pull/6447 (partial)
+- backport https://github.com/kubernetes/autoscaler/pull/6470 (partial)
+- backport https://github.com/kubernetes/autoscaler/pull/7003
+- backport https://github.com/kubernetes/autoscaler/pull/7116
+
 ## cluster-autoscaler-1.29.4-1.6.0-adobe
 - built from CA v1.29.4
 
