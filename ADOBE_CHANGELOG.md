@@ -17,6 +17,12 @@ A stands for Adobe's changes
 
 # Log
 
+## cluster-autoscaler-1.29.4-1.8.0-adobe
+- backport https://github.com/jackfrancis/autoscaler/commit/7bcdfe872f3fffaebe0650e0a022b860cdcebf66
+
+## cluster-autoscaler-1.29.4-1.7.0-adobe
+_not released_
+
 ## cluster-autoscaler-1.29.4-1.6.0-adobe
 - built from CA v1.29.4
 
